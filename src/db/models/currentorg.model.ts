@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 import { User } from "./user.model";
 import { Organization } from "./organization.model";
+import { AppDataSource } from "../init";
 
 @Entity()
 export class CurrentOrg {
@@ -20,7 +21,7 @@ export class CurrentOrg {
   @ManyToOne(() => Organization, (organization) => organization.users)
   organization: Organization;
 
-  @Column({ enum: ["superadmin", "admin", "user"], default: "user" })
+  @Column({ enum: ["super_admin", "admin", "member"], default: "member" })
   role: string;
 
   @Column({ default: false })
@@ -35,3 +36,6 @@ export class CurrentOrg {
   @UpdateDateColumn()
   updatedAt: Date;
 }
+
+export const currentOrgRepository = AppDataSource.getRepository(CurrentOrg);
+export type CurrentOrgType = InstanceType<typeof CurrentOrg>;

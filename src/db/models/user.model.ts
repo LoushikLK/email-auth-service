@@ -9,6 +9,7 @@ import {
 } from "typeorm";
 import { Organization } from "./organization.model";
 import { CurrentOrg } from "./currentorg.model";
+import { AppDataSource } from "../init";
 
 @Entity()
 export class User {
@@ -18,8 +19,14 @@ export class User {
   @Column({ default: "user" })
   name: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: false })
   email: string;
+
+  @Column({ unique: true, nullable: true })
+  phoneNumber: string;
+
+  @Column({ nullable: true })
+  phoneCode: string;
 
   @Column()
   password: string;
@@ -45,3 +52,6 @@ export class User {
   @ManyToMany(() => Organization, (user) => user.users)
   organizations: Organization[];
 }
+
+export const userRepository = AppDataSource.getRepository(User);
+export type UserType = InstanceType<typeof User>;

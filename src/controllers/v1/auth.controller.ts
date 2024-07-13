@@ -1,14 +1,48 @@
 import { NextFunction, Request, Response } from "express";
-import { auth } from "../../functions/v1";
+import { AuthService } from "../../services/auth.service";
+import { AuthFunctions } from "../../functions/v1/auth.function";
 
-export class AuthController {
-  constructor() {}
+export class AuthController extends AuthFunctions {
+  constructor() {
+    super();
+  }
 
-  protected static async create(
+  public async register(
     req: Request,
-    res: Response,
-    next: NextFunction
+    res: Response<{
+      success: boolean;
+    }>,
+    next: NextFunction,
   ) {
-    res.send(auth.createUser());
+    try {
+      await this.registerUserByEmail(req.body);
+      res.json({
+        success: true,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  protected async create(req: Request, res: Response, next: NextFunction) {
+    res.send("hello");
+  }
+  public async login(req: Request, res: Response, next: NextFunction) {
+    res.send("hello");
+  }
+
+  public async getAccessToken(req: Request, res: Response, next: NextFunction) {
+    try {
+      const accessToken =
+        await new AuthService().generateAccessTokenFromRefreshToken(req);
+      res.json({
+        success: true,
+        data: {
+          accessToken: accessToken,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
   }
 }

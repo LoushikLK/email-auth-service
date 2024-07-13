@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { User } from "./user.model";
+import { AppDataSource } from "../init";
 
 @Entity()
 export class Organization {
@@ -28,3 +29,6 @@ export class Organization {
   @ManyToMany(() => User, (user) => user.organizations)
   users: User[];
 }
+
+export const organizationRepository = AppDataSource.getRepository(Organization);
+export type OrganizationType = InstanceType<typeof Organization>;

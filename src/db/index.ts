@@ -1,2 +1,2 @@
 export * from "./init";
-export * from "./models";
+export * as models from "./models";
