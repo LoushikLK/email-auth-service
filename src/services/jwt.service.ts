@@ -3,7 +3,7 @@ import { ENVIRONMENT } from "../config";
 import { JWT_ERROR } from "../error";
 import { Unauthorized, BadRequest } from "http-errors";
 export class JwtService {
-  protected sign(payload: string | object | Buffer, options?: jwt.SignOptions) {
+  public sign(payload: string | object | Buffer, options?: jwt.SignOptions) {
     return new Promise((resolve, reject) => {
       jwt.sign(
         payload,
@@ -19,7 +19,7 @@ export class JwtService {
     });
   }
 
-  protected verify<T>(token: string): Promise<T> {
+  public verify<T>(token: string): Promise<T> {
     return new Promise((resolve, reject) => {
       jwt.verify(token, ENVIRONMENT.jwtSecret, (err, decoded) => {
         if (err) {

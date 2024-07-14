@@ -53,12 +53,18 @@ const validateRegistration = () => {
 const validateEmailVerify = () => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const validations: ValidationChain[] = [
-      body("token")
+      body("otp")
         .notEmpty()
-        .withMessage("token is required.")
+        .withMessage("otp is required.")
         .trim()
-        .isJWT()
-        .withMessage("provide a valid token."),
+        .isNumeric()
+        .withMessage("provide a valid otp."),
+      body("email")
+        .notEmpty()
+        .withMessage("email is required.")
+        .trim()
+        .isEmail()
+        .withMessage("provide a valid email."),
     ];
 
     await validateRequestParams(validations, req, res, next);
@@ -68,25 +74,10 @@ const validateResendVerificationCode = () => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const validations: ValidationChain[] = [
       body("email")
-        .optional()
+        .notEmpty()
         .trim()
         .isEmail()
         .withMessage("provide a valid email."),
-      body("phoneNumber")
-        .optional()
-        .trim()
-        .isMobilePhone("en-IN")
-        .withMessage("provide a valid phoneNumber.")
-        .custom((value, { req }) => {
-          if (!value && !req.body?.email) return false;
-          return true;
-        })
-        .withMessage("Email is required."),
-      body("isPhoneNumber")
-        .optional()
-        .isBoolean()
-        .withMessage("provide a valid isPhoneNumber.")
-        .toBoolean(),
     ];
 
     await validateRequestParams(validations, req, res, next);

@@ -22,11 +22,17 @@ export class User {
   @Column({ unique: true, nullable: false })
   email: string;
 
+  @Column({ default: false })
+  is_email_verified: boolean;
+
   @Column({ unique: true, nullable: true })
   phoneNumber: string;
 
   @Column({ nullable: true })
   phoneCode: string;
+
+  @Column({ default: false })
+  is_phone_verified: boolean;
 
   @Column()
   password: string;
@@ -42,6 +48,12 @@ export class User {
 
   @Column({ default: false })
   is_blocked: boolean;
+
+  @Column({ type: "jsonb" })
+  verificationInfo: {
+    otp: string;
+    expiry: Date;
+  };
 
   @CreateDateColumn()
   createdAt: Date;

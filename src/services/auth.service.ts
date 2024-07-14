@@ -1,8 +1,9 @@
-import { NextFunction, Request, Response } from "express";
+import { Request } from "express";
 import { Unauthorized } from "http-errors";
 import { AUTH_ERROR } from "../error";
 import { JwtService } from "./jwt.service";
 import { userRepository, UserType } from "../db/models";
+import { TokenPayload } from "../types";
 
 export class AuthService extends JwtService {
   constructor() {
@@ -62,9 +63,15 @@ export class AuthService extends JwtService {
     const accessToken = await this.sign(userDetails);
     return accessToken;
   }
-  protected async getRefreshToken(payload: Partial<UserType>) {
+  public async getRefreshToken(payload: TokenPayload) {
     const decodedRefreshToken = await this.sign(payload, {
       expiresIn: "7d",
+    });
+    return decodedRefreshToken;
+  }
+  public async getAccessToken(payload: TokenPayload) {
+    const decodedRefreshToken = await this.sign(payload, {
+      expiresIn: "8h",
     });
     return decodedRefreshToken;
   }

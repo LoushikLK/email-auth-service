@@ -7,6 +7,7 @@ const ENVIRONMENT = {
   dbUri:
     process.env.DB_URI || "postgresql://postgres:1234@localhost:5432/postgres",
   logs: process.env.NODE_ENV === "production" ? "combined" : "dev",
+  nodeEnv: process.env.NODE_ENV,
 };
 
 export { ENVIRONMENT };
