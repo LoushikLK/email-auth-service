@@ -1,0 +1,6 @@
+export enum QueueEnum {
+  SEND_EMAIL = "SEND_EMAIL",
+  SEND_SMS = "SEND_SMS",
+  SEND_NOTIFICATION = "SEND_NOTIFICATION",
+  SEND_PUSH = "SEND_PUSH",
+}
